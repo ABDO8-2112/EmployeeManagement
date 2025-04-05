@@ -17,9 +17,14 @@ namespace EmployeeManagement.API.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<EmployeeDTO>> GetAllAsync()
+        public async Task<IEnumerable<EmployeeDTO>> GetAllAsync(int page, int pageSize)
         {
-            var employeeList = await _context.Employees.ToListAsync();
+            var totalCount = await _context.Employees.CountAsync();
+            var employeeList = await _context.Employees
+                .OrderBy(e => e.EmployeeId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();            
             return _mapper.Map<IEnumerable<EmployeeDTO>>(employeeList);
         }
 

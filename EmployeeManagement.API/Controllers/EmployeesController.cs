@@ -16,9 +16,9 @@ namespace EmployeeManagement.API.Controllers
             _employeeService = employeeService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetAll(int page, int pageSize)
         {
-            var employees = await _employeeService.GetAllEmployeesAsync();
+            var employees = await _employeeService.GetAllEmployeesAsync(page,pageSize);
             return Ok(employees);
         }
 

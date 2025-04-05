@@ -12,9 +12,9 @@ namespace EmployeeManagement.API.Services
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<IEnumerable<EmployeeDTO>> GetAllEmployeesAsync()
+        public async Task<IEnumerable<EmployeeDTO>> GetAllEmployeesAsync(int page, int pageSize)
         {
-            return await _employeeRepository.GetAllAsync();
+            return await _employeeRepository.GetAllAsync(page,pageSize);
         }
 
         public async Task<EmployeeDTO?> GetEmployeeByIdAsync(int id)
