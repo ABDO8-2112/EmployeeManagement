@@ -53,7 +53,7 @@ namespace EmployeeManagement.API.Controllers
             {
                 var updatedEmployee = await _employeeService.UpdateEmployeeAsync(employee);
                 if (updatedEmployee == null) return NotFound();
-                return NoContent();
+                return Ok(employee);
             }
             catch (ArgumentException ex)
             {

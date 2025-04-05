@@ -34,7 +34,8 @@ namespace EmployeeManagement.API.Repositories
             var employee = _mapper.Map<Employee>(employeeDTO);
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
-            return employeeDTO;
+            
+            return _mapper.Map<EmployeeDTO>(employee);
         }
 
         public async Task<EmployeeDTO?> UpdateAsync(EmployeeDTO employee)
