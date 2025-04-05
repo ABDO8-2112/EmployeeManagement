@@ -1,0 +1,106 @@
+﻿@page
+@model EmployeeManagement.Web.Pages.Employees.IndexModel
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="container mt-4">
+    <h2>Employee Management</h2>
+
+    <!-- Filter Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Filters</h5>
+        </div>
+        <div class="card-body">
+            <form method="get">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Search</label>
+                            <input type="text" class="form-control" name="search" value="@Model.Search" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Position</label>
+                            <input type="text" class="form-control" name="position" value="@Model.Position" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Min Salary</label>
+                            <input type="number" step="0.01" class="form-control" name="salary" value="@Model.Salary" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Hired After</label>
+                            <input type="date" class="form-control" name="hiredAfter" value="@Model.HiredAfter?.ToString("yyyy-MM-dd")" />
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Apply Filters</button>
+                <a href="@Url.Page("./Index")" class="btn btn-secondary mt-2">Reset</a>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>Employee List</h5>
+            <a asp-page="Create" class="btn btn-success">Add New Employee</a>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Position</th>
+                        <th>Salary</th>
+                        <th>Date Hired</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model.Employees.Skip((Model.CurrentPage - 1) * Model.PageSize).Take(Model.PageSize))
+                    {
+                        <tr>
+                            <td>@employee.EmployeeId</td>
+                            <td>@employee.FirstName</td>
+                            <td>@employee.LastName</td>
+                            <td>@employee.Position</td>
+                            <td>@employee.Salary.ToString("C")</td>
+                            <td>@employee.DateHired.ToShortDateString()</td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@employee.EmployeeId" class="btn btn-sm btn-primary">Edit</a>
+                                <a asp-page="./Delete" asp-route-id="@employee.EmployeeId" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.TotalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination">
+                        @for (var i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a asp-page="./Index"
+                                   asp-route-pageNumber="@i"
+                                   asp-route-searchTerm="@Model.SearchTerm"
+                                   asp-route-positionFilter="@Model.PositionFilter"
+                                   asp-route-minSalary="@Model.MinSalary"
+                                   asp-route-maxSalary="@Model.MaxSalary"
+                                   asp-route-hiredAfter="@Model.HiredAfter?.ToString("yyyy-MM-dd")"
+                                   class="page-link">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
+</div>
