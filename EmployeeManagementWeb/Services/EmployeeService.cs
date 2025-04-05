@@ -2,7 +2,7 @@
 
 namespace EmployeeManagementWeb.Services
 {
-    public class EmployeeService
+    public class EmployeeService: IEmployeeService
     {
         private readonly HttpClient _httpClient;
         private const string ApiBaseUrl = "https://localhost:7008/api/employees";
